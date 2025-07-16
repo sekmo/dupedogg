@@ -1,4 +1,6 @@
 
+#!/usr/bin/env python3
+
 import os
 import argparse
 from PIL import Image

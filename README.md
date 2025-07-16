@@ -22,7 +22,31 @@ This script uses a perceptual hashing algorithm to find images that are visually
     pip install -r requirements.txt
     ```
 
-## Usage
+## Making the Script a Global Command (for zsh)
+
+To make the script available as a command from anywhere in your terminal, follow these steps:
+
+1.  **Make the script executable:**
+    ```bash
+    chmod +x find_similar.py
+    ```
+
+2.  **Add the script's directory to your `PATH`:**
+    ```bash
+    echo 'export PATH="/Users/francescomari/similar_images_gemini:$PATH"' >> ~/.zshrc
+    ```
+
+3.  **Refresh your shell session:**
+
+    Open a new terminal window or run `source ~/.zshrc`.
+
+Now you can run the command from any directory like this:
+
+```bash
+find_similar.py --image YOUR_IMAGE.JPG --threshold 5
+```
+
+
 
 To use the script, run the following command from the project's root directory:
 
