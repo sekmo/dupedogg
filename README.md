@@ -33,6 +33,9 @@ python3 find_similar.py --image YOUR_IMAGE.JPG --threshold 5
 ### Arguments
 
 *   `--image`: The path to the source image to compare against.
-*   `--threshold`: The similarity threshold. A lower number means more similar. The default is 5.
+*   `--threshold`: The similarity threshold, which represents the maximum allowed Hamming distance between two image hashes. A lower number means the images must be *more* similar. The default is 5.
+    *   A threshold of `0` means the images must be absolutely identical.
+    *   A threshold of `1` to `10` is good for finding near-identical images (e.g., minor edits, watermarks, or format changes).
+    *   Values above `10` may start to identify images that are only loosely related. There is no theoretical maximum, but a very high value (e.g., `100`) would likely treat all images as similar.
 
 The script will create a `similar_images_found` directory and move any similar images into it.
