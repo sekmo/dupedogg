@@ -12,10 +12,21 @@ def find_similar_images(image_path, threshold, search_dir):
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
-    if not os.path.isabs(image_path):
-        source_image_full_path = os.path.join(search_dir, image_path)
-    else:
-        source_image_full_path = image_path
+    source_image_full_path = image_path
+    if not source_image_full_path:
+        # If --image is not provided, try to find reference.jpg or reference.png
+        ref_jpg = os.path.join(search_dir, "reference.jpg")
+        ref_png = os.path.join(search_dir, "reference.png")
+        if os.path.exists(ref_jpg):
+            source_image_full_path = ref_jpg
+        elif os.path.exists(ref_png):
+            source_image_full_path = ref_png
+        else:
+            print("Error: No source image provided and 'reference.jpg' or 'reference.png' not found in the search directory.")
+            return
+
+    if not os.path.isabs(source_image_full_path):
+        source_image_full_path = os.path.join(search_dir, source_image_full_path)
 
     try:
         source_hash = imagehash.phash(Image.open(source_image_full_path))
@@ -50,7 +61,7 @@ def find_similar_images(image_path, threshold, search_dir):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Find and move similar images.")
-    parser.add_argument("--image", required=True, help="The source image to compare against.")
+    parser.add_argument("--image", help="The source image to compare against. If not provided, will look for 'reference.jpg' or 'reference.png' in the search directory.")
     parser.add_argument("--threshold", type=int, default=5, help="Similarity threshold (lower is more similar).")
     parser.add_argument("--search-dir", required=True, help="The directory to search for images in.")
     args = parser.parse_args()

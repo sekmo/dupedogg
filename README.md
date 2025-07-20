@@ -65,7 +65,8 @@ find_similar --image YOUR_IMAGE.JPG --threshold 5
 
 ### Arguments
 
-*   `--image`: The path to the source image to compare against.
+*   `--image`: (Optional) The path to the source image to compare against. If not provided, the script will look for `reference.jpg` or `reference.png` in the `--search-dir` directory.
+*   `--search-dir`: The directory to search for images in. This is also where the `similar_images_found` directory will be created.
 *   `--threshold`: The similarity threshold, which represents the maximum allowed Hamming distance between two image hashes. A lower number means the images must be *more* similar. The default is 5.
     *   A threshold of `0` means the images must be absolutely identical.
     *   A threshold of `1` to `10` is good for finding near-identical images (e.g., minor edits, watermarks, or format changes).
