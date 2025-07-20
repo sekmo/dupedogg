@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="dupedogg",
-    version="0.1.3",
+    version="0.1.4",
     py_modules=["dupedogg"],
     install_requires=[
         "Pillow",

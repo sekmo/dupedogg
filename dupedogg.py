@@ -63,19 +63,20 @@ def find_similar_images(image_path, threshold, search_dir):
             if result:
                 moved_files.append(result)
 
+    # Extract reference image filename from full path
+    ref_image_name = os.path.basename(source_image_full_path)
+    
     if moved_files:
-        print("Moved the following similar images:")
-        for f in moved_files:
-            print(f)
+        print(f"Images detected: {len(moved_files)}, Threshold: {threshold}, Reference: {ref_image_name}")
     else:
-        print("No similar images found.")
+        print(f"Images detected: 0, Threshold: {threshold}, Reference: {ref_image_name}")
 
 def main():
     parser = argparse.ArgumentParser(description="Find and move similar images.")
     parser.add_argument("--image", help="The source image to compare against. If not provided, will look for 'reference.jpg' or 'reference.png' in the search directory.")
     parser.add_argument("--threshold", type=int, default=5, help="Similarity threshold (lower is more similar).")
     parser.add_argument("--search-dir", default="./", help="The directory to search for images in. Defaults to current directory.")
-    parser.add_argument("--version", action="version", version="%(prog)s 0.1.3")
+    parser.add_argument("--version", action="version", version="%(prog)s 0.1.4")
     args = parser.parse_args()
     find_similar_images(args.image, args.threshold, args.search_dir)
 
