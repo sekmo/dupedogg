@@ -6,6 +6,19 @@ from PIL import Image
 import imagehash
 import shutil
 from tqdm import tqdm
+import multiprocessing
+import functools
+
+def process_image(source_hash, threshold, output_folder, search_dir, filename):
+    current_file_path = os.path.join(search_dir, filename)
+    try:
+        other_hash = imagehash.phash(Image.open(current_file_path))
+        if source_hash - other_hash <= threshold:
+            shutil.move(current_file_path, os.path.join(output_folder, filename))
+            return filename
+    except Exception as e:
+        print(f"Could not process {filename}: {e}")
+    return None
 
 def find_similar_images(image_path, threshold, search_dir):
     output_folder = os.path.join(search_dir, "similar_images_found")
@@ -34,23 +47,20 @@ def find_similar_images(image_path, threshold, search_dir):
         print(f"Error: The file {source_image_full_path} does not exist.")
         return
 
-    moved_files = []
     image_files = [
         filename for filename in os.listdir(search_dir)
-        if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif'))
+        if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif')) and
+           os.path.abspath(os.path.join(search_dir, filename)) != os.path.abspath(source_image_full_path)
     ]
 
-    for filename in tqdm(image_files, desc="Finding similar images", bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [ETA: {remaining}{postfix}]", mininterval=1.0):
-            current_file_path = os.path.join(search_dir, filename)
-            if os.path.abspath(current_file_path) == os.path.abspath(source_image_full_path):
-                continue
-            try:
-                other_hash = imagehash.phash(Image.open(current_file_path))
-                if source_hash - other_hash <= threshold:
-                    shutil.move(current_file_path, os.path.join(output_folder, filename))
-                    moved_files.append(filename)
-            except Exception as e:
-                print(f"Could not process {filename}: {e}")
+    moved_files = []
+    # Use multiprocessing to speed up image processing
+    with multiprocessing.Pool() as pool:
+        func = functools.partial(process_image, source_hash, threshold, output_folder, search_dir)
+        for result in tqdm(pool.imap_unordered(func, image_files), total=len(image_files),
+                           desc="Finding similar images", bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [ETA: {remaining}{postfix}]", mininterval=1.0):
+            if result:
+                moved_files.append(result)
 
     if moved_files:
         print("Moved the following similar images:")
