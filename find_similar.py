@@ -29,7 +29,7 @@ def find_similar_images(image_path, threshold, search_dir):
         if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif'))
     ]
 
-    for filename in tqdm(image_files, desc="Finding similar images"):
+    for filename in tqdm(image_files, desc="Finding similar images", bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [ETA: {remaining}{postfix}]", mininterval=1.0):
             current_file_path = os.path.join(search_dir, filename)
             if os.path.abspath(current_file_path) == os.path.abspath(source_image_full_path):
                 continue
