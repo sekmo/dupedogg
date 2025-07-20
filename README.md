@@ -73,3 +73,21 @@ find_similar --image YOUR_IMAGE.JPG --threshold 5
     *   Values above `10` may start to identify images that are only loosely related. There is no theoretical maximum, but a very high value (e.g., `100`) would likely treat all images as similar.
 
 The script will create a `similar_images_found` directory in the current working directory and move any similar images into it.
+
+## Releasing a New Version
+
+To release a new version of `dupedogg`, follow these steps:
+
+1.  **Update the Application (`dupedogg` repo)**
+    *   Make your code changes in the `dupedogg` directory.
+    *   Update the version number in `setup.py`.
+    *   Commit your changes (`git commit -m "Your detailed commit message"`).
+    *   Create a new version tag (e.g., `git tag v0.2.0`).
+    *   Push your commits and the new tag to GitHub (`git push && git push origin v0.2.0`).
+
+2.  **Update the Homebrew Tap (`homebrew-dupedogg` repo)**
+    *   Calculate the `sha256` checksum for the new release asset (e.g., `curl -sL https://github.com/sekmo/dupedogg/archive/refs/tags/v0.2.0.tar.gz | shasum -a 256`).
+    *   Edit the `dupedogg.rb` file in the `homebrew-dupedogg` repository.
+    *   Change the `url` to point to the new version tag.
+    *   Replace the old `sha256` with the new one.
+    *   Commit and push these changes to the `homebrew-dupedogg` repository.
