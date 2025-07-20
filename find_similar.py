@@ -5,6 +5,7 @@ import argparse
 from PIL import Image
 import imagehash
 import shutil
+from tqdm import tqdm
 
 def find_similar_images(image_path, threshold, search_dir):
     output_folder = os.path.join(search_dir, "similar_images_found")
@@ -23,8 +24,12 @@ def find_similar_images(image_path, threshold, search_dir):
         return
 
     moved_files = []
-    for filename in os.listdir(search_dir):
-        if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif')):
+    image_files = [
+        filename for filename in os.listdir(search_dir)
+        if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif'))
+    ]
+
+    for filename in tqdm(image_files, desc="Finding similar images"):
             current_file_path = os.path.join(search_dir, filename)
             if os.path.abspath(current_file_path) == os.path.abspath(source_image_full_path):
                 continue
