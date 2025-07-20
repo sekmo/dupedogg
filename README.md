@@ -37,7 +37,7 @@ brew install sekmo/dupedogg/dupedogg
 ## Usage
 
 ```bash
-dupedogg --search-dir /path/to/images --image reference.jpg --threshold 5
+dupedogg --search-dir <directory> [--image <image_file>] [--threshold <number>]
 ```
 
 ### Arguments
