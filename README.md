@@ -37,13 +37,13 @@ brew install sekmo/dupedogg/dupedogg
 ## Usage
 
 ```bash
-dupedogg --search-dir <directory> [--image <image_file>] [--threshold <number>]
+dupedogg [--search-dir <directory>] [--image <image_file>] [--threshold <number>]
 ```
 
 ### Arguments
 
-*   `--image`: (Optional) The path to the source image to compare against. If not provided, dupedogg will look for `reference.jpg` or `reference.png` in the `--search-dir` directory.
-*   `--search-dir`: (Required) The directory to search for images in. This is also where the `similar_images_found` directory will be created.
+*   `--search-dir`: (Optional) The directory to search for images in. Defaults to the current directory. This is also where the `similar_images_found` directory will be created.
+*   `--image`: (Optional) The path to the source image to compare against. If not provided, dupedogg will look for `reference.jpg` or `reference.png` in the search directory.
 *   `--threshold`: The similarity threshold, which represents the maximum allowed Hamming distance between two image hashes. A lower number means the images must be *more* similar. The default is 5.
     *   A threshold of `0` means the images must be absolutely identical.
     *   A threshold of `1` to `10` is good for finding near-identical images (e.g., minor edits, watermarks, or format changes).
@@ -53,12 +53,17 @@ Dupedogg will create a `similar_images_found` directory in the search directory 
 
 ### Examples
 
+Run dupedogg in the current directory (looks for `reference.jpg` or `reference.png`):
+```bash
+dupedogg
+```
+
 Find images similar to a specific reference image:
 ```bash
 dupedogg --search-dir ./photos --image reference.jpg --threshold 5
 ```
 
-Find images similar to `reference.jpg` or `reference.png` in the search directory:
+Find images similar to `reference.jpg` or `reference.png` in a specific directory:
 ```bash
 dupedogg --search-dir ./photos --threshold 3
 ```
