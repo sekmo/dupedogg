@@ -74,6 +74,7 @@ def main():
     parser.add_argument("--image", help="The source image to compare against. If not provided, will look for 'reference.jpg' or 'reference.png' in the search directory.")
     parser.add_argument("--threshold", type=int, default=5, help="Similarity threshold (lower is more similar).")
     parser.add_argument("--search-dir", required=True, help="The directory to search for images in.")
+    parser.add_argument("--version", action="version", version="%(prog)s 0.1.1")
     args = parser.parse_args()
     find_similar_images(args.image, args.threshold, args.search_dir)
 
